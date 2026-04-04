@@ -1,51 +1,10 @@
-const { Client } = require('pg');
-require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+const targetPath = path.join('..', 'server', 'setupDatabase.js');
+let dbScript = fs.readFileSync(targetPath, 'utf8');
 
-async function createDatabaseAndTable() {
-  const dbConfig = {
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-  };
-
-  const dbName = process.env.DB_NAME;
-
-  console.log('Connecting to PostgreSQL to check database ' + dbName + '...');
-  const initialClient = new Client({ ...dbConfig, database: 'postgres' });
-
-  try {
-    await initialClient.connect();
-    const checkDbQuery = await initialClient.query(
-      'SELECT datname FROM pg_catalog.pg_database WHERE datname = $1',
-      [dbName]
-    );
-
-    if (checkDbQuery.rowCount === 0) {
-      console.log('Database ' + dbName + ' not found. Creating it now...');
-      await initialClient.query('CREATE DATABASE \x22' + dbName + '\x22');
-      console.log('Database ' + dbName + ' created successfully!');
-    } else {
-      console.log('Database ' + dbName + ' already exists. Skipping creation.');
-    }
-  } catch (error) {
-    if (error.code === '28P01') {
-      console.error('\n? ERROR: Authentication failed. Please check your DB_PASSWORD in server/.env\n');
-    } else {
-      console.error('? Error during database creation:', error.message);
-    }
-    process.exit(1);
-  } finally {
-    await initialClient.end();
-  }
-
-  console.log('\nConnecting to ' + dbName + ' to create tables...');
-  const targetClient = new Client({ ...dbConfig, database: dbName });
-
-  try {
-    await targetClient.connect();
-    
-    const createTableQuery = `
+const queryBlock = \
+    const createTablesQuery = \\\\\
       -- 1. users
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -113,17 +72,20 @@ async function createDatabaseAndTable() {
         project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE,
         tag_name VARCHAR(50) NOT NULL
       );
-    `;
+    \\\\\;
 
-    await targetClient.query(createTableQuery);
-    console.log('? All database tables ensured successfully! Your database is completely ready.');
-  } catch (error) {
-    console.error('? Error creating tables:', error.message);
-    process.exit(1);
-  } finally {
-    await targetClient.end();
-  }
+    await targetClient.query(createTablesQuery);
+    console.log('? All recommended portfolio tables created successfully!');
+\;
+
+const marker = "const createTableQuery = 'CREATE TABLE IF NOT EXISTS messages (id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL, email VARCHAR(150) NOT NULL, message TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);';\r\n\r\n    await targetClient.query(createTableQuery);\r\n    console.log('? messages table ensured successfully! Your database is completely ready.');";
+
+let splitIndex = dbScript.indexOf(marker.substring(0, 30));
+if (splitIndex !== -1) {
+    const endPart = dbScript.indexOf("} catch (error) {", splitIndex);
+    dbScript = dbScript.substring(0, splitIndex) + queryBlock + "\\n  " + dbScript.substring(endPart);
+    fs.writeFileSync(targetPath, dbScript, 'utf8');
+    console.log('Replaced query block');
+} else {
+    console.log('Could not find marker');
 }
-
-createDatabaseAndTable();
-
