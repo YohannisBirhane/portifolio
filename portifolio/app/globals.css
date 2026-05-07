@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+/* Allow next-themes 'dark' class to trigger tailwind's dark: utilities */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #f8fafc;
+  --foreground: #171717;
+  --bg-gradient-1: #e0f2fe;
+  --bg-gradient-2: #fdf4ff;
+  --bg-gradient-3: #f0fdf4;
+}
+
+.dark {
+  --background: #111222;
+  --foreground: #ededed;
+  --secondary-bg: #1e1f3a;
+  --bg-gradient-1: #111222;
+  --bg-gradient-2: #1b264f;
+  --bg-gradient-3: #221c35;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+/* Interactive Space Background */
+.animated-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: radial-gradient(circle at 15% 50%, rgba(20, 40, 100, 0.4), transparent 50%),
+              radial-gradient(circle at 85% 30%, rgba(50, 20, 80, 0.4), transparent 50%),
+              radial-gradient(circle at 50% 80%, rgba(60, 40, 20, 0.4), transparent 50%),
+              linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-1));
+  background-size: 200% 200%, 200% 200%, 200% 200%, 400% 400%;
+  animation: bgShift 20s ease-in-out infinite;
+}
+
+@keyframes bgShift {
+  0%, 100% {
+    background-position: 0% 0%, 100% 0%, 50% 100%, 0% 50%;
+  }
+  50% {
+    background-position: 100% 100%, 0% 100%, 50% 0%, 100% 50%;
+  }
+}
