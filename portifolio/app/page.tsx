@@ -118,7 +118,8 @@ export default function Home() {
                 src="/images/profile2.png" 
                 alt="Yohannis Birhane"
                 fill
-              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
+                priority
+                className="object-cover rounded-full"
               />
             </div>
           </div>
@@ -208,32 +209,28 @@ export default function Home() {
               
               <ul className="space-y-4 text-slate-700 dark:text-gray-300 text-sm md:text-base">
                 <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                  <span className="text-blue-500 font-bold">✦</span>
                   Full Stack Web Development
                 </li>
                 <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                  <span className="text-blue-500 font-bold">✦</span>
                   Data Structures & Algorithms
                 </li>
                 <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  Open Source Contributions
+                  <span className="text-blue-500 font-bold">✦</span>
+                  Artificial Intelligence & Machine Learning
                 </li>
                 <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  Hackathons & Coding Competitions
+                  <span className="text-blue-500 font-bold">✦</span>
+                  Team Collaboration & Agile Development
                 </li>
                 <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  UI/UX Design
+                  <span className="text-blue-500 font-bold">✦</span>
+                  Cybersecurity
                 </li>
                 <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  API Integration
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  Mobile App Development
+                  <span className="text-blue-500 font-bold">✦</span>
+                  Problem Solving
                 </li>
               </ul>
             </motion.div>
@@ -536,7 +533,7 @@ export default function Home() {
 
                   {/* Email */}
                   <a href="mailto:yohannesb139@gmail.com" className="flex items-center gap-4 group hover:bg-white/40 dark:hover:bg-slate-800/40 p-2 -ml-2 rounded-xl transition-colors">
-                    <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-500/20 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:scale-110 group-hover:rotate-6 transition-all">
+                    <div className="w-12 h-12 bg-blue-100 dark:bg-slate-700/50 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:scale-110 group-hover:rotate-6 transition-all">
                       <Mail size={24} />
                     </div>
                     <div>
@@ -547,7 +544,7 @@ export default function Home() {
 
                   {/* Phone */}
                   <a href="tel:+251931034560" className="flex items-center gap-4 group hover:bg-white/40 dark:hover:bg-slate-800/40 p-2 -ml-2 rounded-xl transition-colors">
-                    <div className="w-12 h-12 bg-teal-100 dark:bg-teal-500/20 rounded-xl flex items-center justify-center text-teal-600 dark:text-teal-400 group-hover:scale-110 group-hover:-rotate-6 transition-all">
+                    <div className="w-12 h-12 bg-blue-100 dark:bg-slate-700/50 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:scale-110 group-hover:-rotate-6 transition-all">
                       <Phone size={24} />
                     </div>
                     <div>
@@ -558,7 +555,7 @@ export default function Home() {
 
                   {/* Location */}
                   <div className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 bg-rose-100 dark:bg-rose-500/20 rounded-xl flex items-center justify-center text-rose-600 dark:text-rose-400 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 bg-blue-100 dark:bg-slate-700/50 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
                       <MapPin size={24} />
                     </div>
                     <div>

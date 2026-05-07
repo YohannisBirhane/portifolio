@@ -22,21 +22,24 @@ export default function ContactForm() {
     setErrorMessage("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/messages", {
+      const response = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
+      const responseData = await response.json().catch(() => null);
+
       if (!response.ok) {
-        throw new Error("Failed to send message.");
+        const message = responseData?.error || responseData?.message || "Failed to send message.";
+        throw new Error(message);
       }
 
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
     } catch (err) {
       setStatus("error");
-      setErrorMessage(t.errorMsg);
+      setErrorMessage(err instanceof Error ? err.message : t.errorMsg);
     }
   };
 
