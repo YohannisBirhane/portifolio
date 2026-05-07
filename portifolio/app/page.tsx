@@ -323,8 +323,7 @@ export default function Home() {
                   { name: "Spring Boot", score: "70%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Spring Boot" className="w-10 h-10" /> },
                   { name: "Laravel", score: "72%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" alt="Laravel" className="w-10 h-10" /> },
                   { name: "Python", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" className="w-10 h-10" /> },
-                  { name: "C++", score: "75%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" className="w-10 h-10" /> },
-                  { name: "Firebase", score: "70%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg" alt="Firebase" className="w-10 h-10" /> }
+                  { name: "C++", score: "75%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" className="w-10 h-10" /> }
                 ].map((skill, idx) => (
                   <div key={idx} className="flex flex-col items-center text-center group cursor-pointer">
                     <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-2xl mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300 font-bold text-slate-700 dark:text-white">

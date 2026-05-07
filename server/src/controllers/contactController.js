@@ -9,7 +9,7 @@ exports.sendMessage = async (req, res) => {
 
   try {
     const result = await db.query(
-      'INSERT INTO messages (name, email, message) VALUES (\, \, \) RETURNING *',
+      'INSERT INTO messages (name, email, message) VALUES ($1, $2, $3) RETURNING *',
       [name, email, message]
     );
 
