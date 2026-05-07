@@ -74,11 +74,17 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.6 }}
-            className="flex gap-6 mt-12 text-slate-500 dark:text-gray-400 font-medium tracking-wide"
+            className="flex gap-4 mt-12"
           >
-            <a href="https://github.com" target="_blank" className="hover:text-blue-500 transition-colors">github</a>
-            <a href="https://linkedin.com" target="_blank" className="hover:text-blue-500 transition-colors">linkedin</a>
-            <a href="mailto:yohannesb139@gmail.com" className="hover:text-blue-500 transition-colors">email</a>
+            <a href="https://github.com/YohannisBirhane?tab=repositories" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white transition-all hover:scale-105" aria-label="GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/yohannis-birhane-5456163a2/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] dark:hover:bg-[#0A66C2] dark:hover:text-white dark:hover:border-[#0A66C2] transition-all hover:scale-105" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" strokeWidth="0"/><circle cx="4" cy="4" r="2" strokeWidth="0"/></svg>
+            </a>
+            <a href="mailto:yohannesb139@gmail.com" className="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-red-500 hover:text-white hover:border-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:hover:border-red-500 transition-all hover:scale-105" aria-label="Email">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </a>
           </motion.div>
         </div>
 
@@ -106,13 +112,13 @@ export default function Home() {
           </motion.div>
 
           {/* Main Image Container */}
-          <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-full p-2 bg-gradient-to-tr from-blue-500 via-cyan-400 to-transparent">
-            <div className="w-full h-full rounded-full overflow-hidden border-[6px] border-white dark:border-[#111222] bg-slate-200 dark:bg-slate-800 relative">
+          <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-full p-2 bg-gradient-to-tr from-green-500 via-emerald-400 to-transparent">
+            <div className="w-full h-full rounded-full overflow-hidden border-[6px] border-white dark:border-[#111222] bg-gradient-to-b from-sky-300 to-green-500 dark:from-sky-900 dark:to-green-900 relative flex items-center justify-center">
               <Image 
-                src="/images/profile.png" 
+                src="/images/profile2.png" 
                 alt="Yohannis Birhane"
                 fill
-                className="object-cover object-center"
+              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
               />
             </div>
           </div>
@@ -127,7 +133,7 @@ export default function Home() {
 
       {/* Dynamic Sections Placeholders */}
                         {/* ABOUT SECTION */}
-      <section id="about" className="py-24 relative bg-transparent overflow-hidden">
+      <section id="about" className="py-24 relative bg-transparent overflow-hidden scroll-mt-24">
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           
           {/* Header */}
@@ -136,6 +142,7 @@ export default function Home() {
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
               className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6"
             >
               About <span className="text-blue-500">Me</span>
@@ -151,15 +158,11 @@ export default function Home() {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             
             {/* Card 1: My Story */}
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-2xl p-8 relative overflow-hidden group shadow-lg"
+              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-2xl p-10 relative overflow-hidden group shadow-lg"
             >
               <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-500/40 to-purple-500/40 blur-md group-hover:h-2 transition-all"></div>
               <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500"></div>
@@ -196,7 +199,7 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-2xl p-8 relative overflow-hidden group shadow-lg"
+              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-2xl p-10 relative overflow-hidden group shadow-lg"
             >
               <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-500/40 to-purple-500/40 blur-md group-hover:h-2 transition-all"></div>
               <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500"></div>
@@ -267,15 +270,11 @@ export default function Home() {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             
             {/* Category 1: Frontend Technologies */}
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-8 shadow-lg"
+              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
@@ -284,12 +283,12 @@ export default function Home() {
               
               <div className="grid grid-cols-3 gap-6">
                 {[
-                  { name: "HTML5", score: "95%", icon: "🟠" },
-                  { name: "CSS3", score: "90%", icon: "🔵" },
-                  { name: "JavaScript", score: "90%", icon: "🟡" },
-                  { name: "React", score: "85%", icon: "⚛️" },
-                  { name: "Next.js", score: "80%", icon: "N" },
-                  { name: "Tailwind CSS", score: "85%", icon: "🌊" }
+                  { name: "HTML5", score: "95%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML5" className="w-10 h-10" /> },
+                  { name: "CSS3", score: "90%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS3" className="w-10 h-10" /> },
+                  { name: "JavaScript", score: "90%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" className="w-10 h-10" /> },
+                  { name: "React", score: "85%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React" className="w-10 h-10" /> },
+                  { name: "Next.js", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" alt="Next.js" className="w-10 h-10 dark:invert" /> },
+                  { name: "Tailwind", score: "85%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind" className="w-10 h-10" /> }
                 ].map((skill, idx) => (
                   <div key={idx} className="flex flex-col items-center text-center group cursor-pointer">
                     <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-2xl mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300">
@@ -308,20 +307,24 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-8 shadow-lg"
+              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white">Backend & Programming</h3>
               </div>
               
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {[
-                  { name: "Node.js", score: "80%", icon: "🟢" },
-                  { name: "Express.js", score: "75%", icon: "ex" },
-                  { name: "Python", score: "80%", icon: "🐍" },
-                  { name: "C++", score: "75%", icon: "C++" },
-                  { name: "Firebase", score: "70%", icon: "🔥" }
+                  { name: "Node.js", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="Node.js" className="w-10 h-10" /> },
+                  { name: "Express.js", score: "75%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" alt="Express.js" className="w-10 h-10 dark:invert" /> },
+                  { name: "PHP", score: "72%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="PHP" className="w-10 h-10" /> },
+                  { name: "Java", score: "75%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java" className="w-10 h-10" /> },
+                  { name: "Spring Boot", score: "70%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Spring Boot" className="w-10 h-10" /> },
+                  { name: "Laravel", score: "72%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" alt="Laravel" className="w-10 h-10" /> },
+                  { name: "Python", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" className="w-10 h-10" /> },
+                  { name: "C++", score: "75%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" className="w-10 h-10" /> },
+                  { name: "Firebase", score: "70%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg" alt="Firebase" className="w-10 h-10" /> }
                 ].map((skill, idx) => (
                   <div key={idx} className="flex flex-col items-center text-center group cursor-pointer">
                     <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-2xl mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300 font-bold text-slate-700 dark:text-white">
@@ -340,7 +343,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-8 shadow-lg"
+              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
@@ -349,8 +352,9 @@ export default function Home() {
               
               <div className="grid grid-cols-2 gap-6">
                 {[
-                  { name: "SQL DBs", score: "80%", icon: "🛢️" },
-                  { name: "MongoDB", score: "80%", icon: "🍃" }
+                  { name: "PostgreSQL", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" className="w-10 h-10" /> },
+                  { name: "MySQL", score: "82%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL" className="w-10 h-10" /> },
+                  { name: "MongoDB", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB" className="w-10 h-10" /> }
                 ].map((skill, idx) => (
                   <div key={idx} className="flex flex-col items-center text-center group cursor-pointer">
                     <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-2xl mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300">
@@ -369,7 +373,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-8 shadow-lg"
+              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
@@ -379,7 +383,9 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-6">
                 {[
                   { name: "Git & GitHub", score: "85%", icon: "🐙" },
-                  { name: "Agile", score: "75%", icon: "🔄" }
+                  { name: "Agile", score: "75%", icon: "🔄" },
+                  { name: "Jira", score: "78%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jira/jira-original.svg" alt="Jira" className="w-10 h-10" /> },
+                  { name: "VS Code", score: "90%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code" className="w-10 h-10" /> }
                 ].map((skill, idx) => (
                   <div key={idx} className="flex flex-col items-center text-center group cursor-pointer">
                     <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-2xl mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300">

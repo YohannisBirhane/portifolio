@@ -4,7 +4,7 @@ import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../utils/translations";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const { lang } = useLanguage();
@@ -12,13 +12,22 @@ export default function Navbar() {
 
   // For mobile menu state
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-transparent transition-colors duration-300 pt-4">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <header className={`fixed top-0 z-50 w-full transition-all duration-300 ${scrolled ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 py-2 shadow-sm" : "bg-transparent py-4"}`}>
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
 
         <Link href="/" className="text-2xl font-extrabold text-blue-500 tracking-tight hover:scale-105 active:scale-95 transition-transform duration-300 inline-block">
-          Yohannis.
+          YohannisBirhane
         </Link>
 
         <div className="flex items-center gap-8 lg:gap-12">
