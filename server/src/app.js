@@ -6,6 +6,7 @@ const messageRoutes = require('./routes/message.routes');
 const profileRoutes = require('./routes/profile.routes');
 const projectRoutes = require('./routes/project.routes');
 const skillRoutes = require('./routes/skill.routes');
+const adminRoutes = require('./routes/admin.routes');
 const { errorHandler } = require('./middleware/error.middleware');
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
   res.send('Portfolio Backend API is running!');

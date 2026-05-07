@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/ThemeProvider";
 import { LanguageProvider } from "../context/LanguageContext";
+import { AdminProvider } from "../context/AdminContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -41,11 +42,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LanguageProvider>
-            <Navbar />
-            <div className="flex-1 flex flex-col">
-              {children}
-            </div>
-            <Footer />
+            <AdminProvider>
+              <Navbar />
+              <div className="flex-1 flex flex-col">
+                {children}
+              </div>
+              <Footer />
+            </AdminProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>

@@ -23,7 +23,7 @@ export default function Home() {
       </div>
 
       {/* 1. HERO SECTION */}
-      <main className="flex flex-col lg:flex-row items-center justify-between relative z-10 w-full min-h-screen text-left py-20 px-10 xl:px-24 max-w-[1400px] mx-auto pt-32">
+      <main className="flex flex-col lg:flex-row items-center justify-between relative z-10 w-full min-h-screen text-left py-20 px-10 xl:px-24 max-w-7xl mx-auto pt-32">
         
         {/* Left Content Block */}
         <div className="flex flex-col items-start justify-center space-y-6 max-w-2xl w-full lg:w-3/5 z-10">
@@ -33,7 +33,7 @@ export default function Home() {
             transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
             className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-800 dark:text-white leading-tight"
           >
-            Hi, I'm <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-400">Yohannis Birhane</span>
+            Hi, I'm <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-500 to-cyan-400">Yohannis Birhane</span>
           </motion.h1>
           
           <motion.h2 
@@ -61,7 +61,7 @@ export default function Home() {
             transition={{ duration: 0.7, delay: 0.5 }}
             className="flex flex-wrap gap-4 mt-8"
           >
-            <Link href="#projects" className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-400 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30">
+            <Link href="#projects" className="px-8 py-3 rounded-lg bg-linear-to-r from-blue-500 to-cyan-400 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30">
               View My Projects
             </Link>
             <a href="/cv.pdf" target="_blank" className="px-8 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/40 text-slate-800 dark:text-white font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors backdrop-blur-md">
@@ -112,14 +112,14 @@ export default function Home() {
           </motion.div>
 
           {/* Main Image Container */}
-          <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-full p-2 bg-gradient-to-tr from-green-500 via-emerald-400 to-transparent">
-            <div className="w-full h-full rounded-full overflow-hidden border-[6px] border-white dark:border-[#111222] bg-gradient-to-b from-sky-300 to-green-500 dark:from-sky-900 dark:to-green-900 relative flex items-center justify-center">
+          <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-full p-2 bg-linear-to-tr from-green-500 via-emerald-400 to-transparent">
+            <div className="w-full h-full rounded-full overflow-hidden border-[6px] border-white dark:border-[#111222] bg-linear-to-b from-sky-300 to-green-500 dark:from-sky-900 dark:to-green-900 relative flex items-center justify-center">
               <Image 
                 src="/images/profile2.png" 
                 alt="Yohannis Birhane"
                 fill
                 priority
-                className="object-cover rounded-full"
+                className="object-cover object-top rounded-full"
               />
             </div>
           </div>
@@ -165,8 +165,8 @@ export default function Home() {
             <motion.div 
               className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-2xl p-10 relative overflow-hidden group shadow-lg"
             >
-              <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-500/40 to-purple-500/40 blur-md group-hover:h-2 transition-all"></div>
-              <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500"></div>
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-linear-to-r from-blue-500/40 to-purple-500/40 blur-md group-hover:h-2 transition-all"></div>
+              <div className="absolute inset-x-0 bottom-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500"></div>
               
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">My Story</h3>
               
@@ -202,8 +202,8 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-2xl p-10 relative overflow-hidden group shadow-lg"
             >
-              <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-500/40 to-purple-500/40 blur-md group-hover:h-2 transition-all"></div>
-              <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500"></div>
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-linear-to-r from-blue-500/40 to-purple-500/40 blur-md group-hover:h-2 transition-all"></div>
+              <div className="absolute inset-x-0 bottom-0 h-0.5 bg-linear-to-r from-blue-500 to-purple-500"></div>
 
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Interests & Goals</h3>
               
@@ -410,7 +410,7 @@ export default function Home() {
             
             {/* Project 1: Kids Learning Platform */}
             <div className="group cursor-pointer relative">
-              <div className="w-full aspect-[4/3] bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
+              <div className="w-full aspect-4/3 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
                 <Image src="/images/kidslearning.png" alt="Kids Learning Platform" fill className="object-cover group-hover:scale-110 transition-transform duration-500 z-0" /> 
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/50 transition-colors duration-300 z-10"></div>
                 
@@ -431,7 +431,7 @@ export default function Home() {
 
             {/* Project 2: Transportation Booking System */}
             <div className="group cursor-pointer relative">
-              <div className="w-full aspect-[4/3] bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
+              <div className="w-full aspect-4/3 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
                 <Image src="/images/transportation.png" alt="Transportation Booking System" fill className="object-cover group-hover:scale-110 transition-transform duration-500 z-0" /> 
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/50 transition-colors duration-300 z-10"></div>
                 
@@ -452,7 +452,7 @@ export default function Home() {
 
             {/* Project 3: Job Portal System */}
             <div className="group cursor-pointer relative">
-              <div className="w-full aspect-[4/3] bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
+              <div className="w-full aspect-4/3 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
                 {/* Replace the emoji with an Image tag later. Example: 
                   <Image src="/images/project3.jpg" alt="Job Portal System" fill className="object-cover group-hover:scale-110 transition-transform duration-500 z-0" /> 
                 */}
@@ -476,7 +476,7 @@ export default function Home() {
 
             {/* Project 4: DBUGG Portal */}
             <div className="group cursor-pointer relative">
-              <div className="w-full aspect-[4/3] bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
+              <div className="w-full aspect-4/3 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
                 {/* Replace the emoji with an Image tag later. Example: 
                   <Image src="/images/project4.jpg" alt="DBUGG Portal" fill className="object-cover group-hover:scale-110 transition-transform duration-500 z-0" /> 
                 */}
@@ -513,7 +513,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="bg-white/70 dark:bg-slate-800/50 backdrop-blur-md rounded-[2rem] p-8 md:p-12 shadow-lg border border-white/40 dark:border-slate-700/50 flex flex-col md:flex-row gap-12 lg:gap-20">
+          <div className="bg-white/70 dark:bg-slate-800/50 backdrop-blur-md rounded-4xl p-8 md:p-12 shadow-lg border border-white/40 dark:border-slate-700/50 flex flex-col md:flex-row gap-12 lg:gap-20">
             {/* Contact Information Panel */}
             <div className="flex-1 space-y-8 flex flex-col justify-center">
               <div>
