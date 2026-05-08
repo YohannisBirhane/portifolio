@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type MouseEvent, type ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, MessageCircle, Send, Star, Zap, Cpu, Users, ShieldCheck, CheckCircle, GraduationCap, Building2, CalendarDays, BookOpen } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import ContactForm from "../components/ContactForm";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../utils/translations";
@@ -26,11 +26,95 @@ const fallbackEducation: EducationEntry[] = [
   },
 ];
 
+type InteractiveProjectCardProps = {
+  children: ReactNode;
+  icon: ReactNode;
+};
+
+function InteractiveProjectCard({ children, icon }: InteractiveProjectCardProps) {
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+
+  const springRotateX = useSpring(rotateX, { stiffness: 180, damping: 18 });
+  const springRotateY = useSpring(rotateY, { stiffness: 180, damping: 18 });
+
+  const dynamicShadow = useTransform(
+    [springRotateX, springRotateY],
+    ([x, y]) => `${(-y * 1.2).toFixed(1)}px ${(x * 1.2 + 18).toFixed(1)}px 40px rgba(2, 6, 23, 0.25)`
+  );
+
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const px = (event.clientX - rect.left) / rect.width - 0.5;
+    const py = (event.clientY - rect.top) / rect.height - 0.5;
+
+    rotateY.set(px * 14);
+    rotateX.set(-py * 14);
+  };
+
+  const handleMouseLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
+  return (
+    <div className="relative perspective-distant">
+      <motion.div
+        initial="rest"
+        animate="rest"
+        whileHover="hover"
+        whileTap={{ scale: 0.98, y: -2 }}
+        variants={{
+          rest: { y: 0, scale: 1 },
+          hover: {
+            y: -10,
+            scale: 1.02,
+            transition: { type: "spring", stiffness: 260, damping: 20 },
+          },
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX: springRotateX,
+          rotateY: springRotateY,
+          transformStyle: "preserve-3d",
+          boxShadow: dynamicShadow,
+        }}
+        className="group relative cursor-pointer rounded-2xl p-2"
+      >
+        <div className="pointer-events-none absolute inset-0 rounded-2xl bg-linear-to-r from-cyan-400/0 via-sky-400/0 to-blue-500/0 opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-100 group-hover:from-cyan-400/55 group-hover:via-sky-400/45 group-hover:to-blue-500/55" />
+
+        <motion.div
+          variants={{
+            rest: { scale: 1, rotate: 0, y: 0, opacity: 0.85 },
+            hover: {
+              scale: [1, 1.15, 1.05],
+              rotate: [0, 12, -8, 0],
+              y: [0, -4, 0],
+              opacity: 1,
+              transition: { duration: 0.45, ease: "easeOut" },
+            },
+          }}
+          className="pointer-events-none absolute right-5 top-5 z-30 rounded-full bg-white/90 p-2 text-blue-600 shadow-lg dark:bg-slate-900/90 dark:text-cyan-300"
+        >
+          {icon}
+        </motion.div>
+
+        <div className="relative z-10" style={{ transform: "translateZ(24px)" }}>
+          {children}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Home() {
   const { lang } = useLanguage();
   const t = translations[lang];
   const [activeTab, setActiveTab] = useState("skills");
   const [education, setEducation] = useState<EducationEntry[]>(fallbackEducation);
+  const [showComingSoonModal, setShowComingSoonModal] = useState(false);
+  const [showJobPortalComingSoonModal, setShowJobPortalComingSoonModal] = useState(false);
 
   useEffect(() => {
     const loadEducation = async () => {
@@ -343,6 +427,10 @@ export default function Home() {
                         <CalendarDays size={18} className="text-cyan-400" />
                         <span>{item.year_level}</span>
                       </div>
+                      <div className="flex items-center gap-3">
+                        <GraduationCap size={18} className="text-emerald-400" />
+                        <span>Expected Graduation: 2028 G.C.</span>
+                      </div>
                       <div className="flex items-start gap-3">
                         <BookOpen size={18} className="text-emerald-400 mt-1" />
                         <span>{item.description || 'Focused on software engineering fundamentals, web development, and project-based learning.'}</span>
@@ -370,6 +458,7 @@ export default function Home() {
                 <p><span className="text-cyan-300 font-semibold">University:</span> Debre Berhan University</p>
                 <p><span className="text-cyan-300 font-semibold">Department:</span> Software Engineering</p>
                 <p><span className="text-cyan-300 font-semibold">Year:</span> 3rd Year</p>
+                <p><span className="text-cyan-300 font-semibold">Expected Graduation:</span> 2028 G.C.</p>
               </div>
             </motion.div>
           </div>
@@ -555,10 +644,10 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
             
             {/* Project 1: Kids Learning Platform */}
-            <div className="group cursor-pointer relative">
-              <div className="w-full aspect-4/3 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
-                <Image src="/images/kidslearning.png" alt="Kids Learning Platform" fill className="object-cover group-hover:scale-110 transition-transform duration-500 z-0" /> 
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/50 transition-colors duration-300 z-10"></div>
+            <InteractiveProjectCard icon={<BookOpen className="h-4 w-4" />}>
+              <div className="w-full aspect-video bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
+                <Image src="/images/kidslearning.png" alt="Kids Learning Platform" fill className="object-contain group-hover:brightness-110 transition-all duration-500 z-0" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" /> 
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 z-10"></div>
                 
                 {/* Hover Buttons */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
@@ -573,13 +662,16 @@ export default function Home() {
               <h3 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 Kids Learning Platform
               </h3>
-            </div>
+              <p className="text-center text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
+                Kid Learning System is an interactive educational platform designed to help children learn through engaging lessons, games, and storytelling activities. The system provides a fun and user-friendly environment that improves children&apos;s creativity, knowledge, and learning experience.
+              </p>
+            </InteractiveProjectCard>
 
             {/* Project 2: Transportation Booking System */}
-            <div className="group cursor-pointer relative">
-              <div className="w-full aspect-4/3 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
-                <Image src="/images/transportation.png" alt="Transportation Booking System" fill className="object-cover group-hover:scale-110 transition-transform duration-500 z-0" /> 
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/50 transition-colors duration-300 z-10"></div>
+            <InteractiveProjectCard icon={<Zap className="h-4 w-4" />}>
+              <div className="w-full aspect-video bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
+                <Image src="/images/transportation.png" alt="Transportation Booking System" fill className="object-contain group-hover:brightness-110 transition-all duration-500 z-0" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" /> 
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 z-10"></div>
                 
                 {/* Hover Buttons */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
@@ -594,23 +686,23 @@ export default function Home() {
               <h3 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 Transportation Booking
               </h3>
-            </div>
+              <p className="text-center text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
+                Transportation Management System is a web-based platform that helps users view schedules, book seats, and manage transportation services efficiently. It enables administrators to manage routes, bookings, and vehicle operations while improving reliability and service delivery.
+              </p>
+            </InteractiveProjectCard>
 
             {/* Project 3: Job Portal System */}
-            <div className="group cursor-pointer relative">
-              <div className="w-full aspect-4/3 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
-                {/* Replace the emoji with an Image tag later. Example: 
-                  <Image src="/images/project3.jpg" alt="Job Portal System" fill className="object-cover group-hover:scale-110 transition-transform duration-500 z-0" /> 
-                */}
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/50 transition-colors duration-300 z-10"></div>
-                <span className="text-8xl group-hover:scale-110 transition-transform duration-500 drop-shadow-lg z-0">💼</span>
+            <InteractiveProjectCard icon={<Building2 className="h-4 w-4" />}>
+              <div className="w-full aspect-video bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
+                <Image src="/images/jobportalprofile.png" alt="Job Portal System" fill className="object-contain group-hover:brightness-110 transition-all duration-500 z-0" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" /> 
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 z-10"></div>
                 
                 {/* Hover Buttons */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-white text-teal-600 font-bold rounded-full hover:bg-teal-50 transition-colors shadow-lg">
+                  <button onClick={() => setShowJobPortalComingSoonModal(true)} className="px-6 py-2 bg-white text-teal-600 font-bold rounded-full hover:bg-teal-50 transition-colors shadow-lg">
                     Live Demo
-                  </a>
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-gray-900 border border-gray-700 text-white font-bold rounded-full hover:bg-gray-800 transition-colors shadow-lg">
+                  </button>
+                  <a href="https://github.com/YohannisBirhane/java-fullstack-version-2" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-gray-900 border border-gray-700 text-white font-bold rounded-full hover:bg-gray-800 transition-colors shadow-lg">
                     GitHub Code
                   </a>
                 </div>
@@ -618,23 +710,26 @@ export default function Home() {
               <h3 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 Job Portal System
               </h3>
-            </div>
+              <p className="text-center text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
+                Job Portal System is a web-based platform developed using Spring Boot and React that connects job seekers with employers across Ethiopia. The system enables users to search and apply for jobs, while employers can post vacancies, manage applications, and recruit qualified candidates efficiently.
+              </p>
+              <div className="text-center text-xs text-gray-500 dark:text-gray-500 mt-3">
+                <span className="font-semibold">Stack:</span> Spring Boot • React • PostgreSQL • JWT • Bcrypt
+              </div>
+            </InteractiveProjectCard>
 
             {/* Project 4: DBUGG Portal */}
-            <div className="group cursor-pointer relative">
-              <div className="w-full aspect-4/3 bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
-                {/* Replace the emoji with an Image tag later. Example: 
-                  <Image src="/images/project4.jpg" alt="DBUGG Portal" fill className="object-cover group-hover:scale-110 transition-transform duration-500 z-0" /> 
-                */}
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/50 transition-colors duration-300 z-10"></div>
-                <span className="text-8xl group-hover:scale-110 transition-transform duration-500 drop-shadow-lg z-0">🐛</span>
+            <InteractiveProjectCard icon={<ShieldCheck className="h-4 w-4" />}>
+              <div className="w-full aspect-video bg-gray-100 dark:bg-slate-800 rounded-lg overflow-hidden shadow-md flex items-center justify-center relative mb-6">
+                <Image src="/images/dbuggportalprofile.png" alt="DBUGG Portal" fill className="object-contain group-hover:brightness-110 transition-all duration-500 z-0" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" /> 
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 z-10"></div>
                 
                 {/* Hover Buttons */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-white text-red-600 font-bold rounded-full hover:bg-red-50 transition-colors shadow-lg">
+                  <button onClick={() => setShowComingSoonModal(true)} className="px-6 py-2 bg-white text-red-600 font-bold rounded-full hover:bg-red-50 transition-colors shadow-lg">
                     Live Demo
-                  </a>
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-gray-900 border border-gray-700 text-white font-bold rounded-full hover:bg-gray-800 transition-colors shadow-lg">
+                  </button>
+                  <a href="https://github.com/YohannisBirhane/dbugg-portal" target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-gray-900 border border-gray-700 text-white font-bold rounded-full hover:bg-gray-800 transition-colors shadow-lg">
                     GitHub Code
                   </a>
                 </div>
@@ -642,7 +737,13 @@ export default function Home() {
               <h3 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 DBUGG Portal
               </h3>
-            </div>
+              <p className="text-center text-sm md:text-base text-gray-600 dark:text-gray-400 mt-2 leading-relaxed">
+                A comprehensive Debre Berhan University Gibi Gubae Portal system featuring React 18, Node.js, PostgreSQL, real-time notifications via Socket.io, bilingual UI (English/Amharic), and role-based access control for Super Admin, Admin, and Members.
+              </p>
+              <div className="text-center text-xs text-gray-500 dark:text-gray-500 mt-3">
+                <span className="font-semibold">Stack:</span> React 18 • Vite • Tailwind • Socket.io • Express • PostgreSQL • JWT • Bcrypt
+              </div>
+            </InteractiveProjectCard>
           </div>
         </div>
       </section>
@@ -650,6 +751,69 @@ export default function Home() {
       <div className="section-break" aria-hidden="true">
         <div className="section-break-line" />
       </div>
+
+      {/* Coming Soon Modal */}
+      {showComingSoonModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 max-w-md mx-4"
+          >
+            <div className="text-center">
+              <div className="text-6xl mb-4">🚀</div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white mb-3">
+                Coming Soon!
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                The live demo for DBUGG Portal is currently in development. We're working hard to bring you an amazing experience soon!
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                Check back soon or reach out for more information.
+              </p>
+              <button 
+                onClick={() => setShowComingSoonModal(false)}
+                className="px-6 py-2 bg-linear-to-r from-blue-500 to-cyan-400 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg"
+              >
+                Got it!
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {showJobPortalComingSoonModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 max-w-md mx-4"
+          >
+            <div className="text-center">
+              <div className="text-6xl mb-4">🚀</div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white mb-3">
+                Coming Soon!
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                The live demo for Job Portal System is currently in development. We're working hard to bring you an amazing experience soon!
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                Check back soon or reach out for more information.
+              </p>
+              <button 
+                onClick={() => setShowJobPortalComingSoonModal(false)}
+                className="px-6 py-2 bg-linear-to-r from-blue-500 to-cyan-400 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg"
+              >
+                Got it!
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* Contact Section */}
       <section id="contact" className="py-24 relative overflow-hidden">
