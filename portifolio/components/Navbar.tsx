@@ -41,6 +41,10 @@ export default function Navbar() {
               <span className="group-hover:text-blue-500 transition-colors">{t.about || "About"}</span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
             </Link>
+            <Link href="/#education" className="relative group text-slate-800 dark:text-gray-200">
+              <span className="group-hover:text-blue-500 transition-colors">Education</span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
             <Link href="/#skills" className="relative group text-slate-800 dark:text-gray-200">
               <span className="group-hover:text-blue-500 transition-colors">Skills</span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
@@ -57,8 +61,8 @@ export default function Navbar() {
 
           {/* Global actions: Theme Toggle + CV + Mobile Menu */}
           <div className="flex items-center gap-4">
-            <a href="/cv.pdf" target="_blank" className="hidden md:inline-block bg-gradient-to-r from-blue-500 to-cyan-500 hover:opacity-90 text-white font-semibold py-2 px-5 rounded-lg transition-opacity shadow-lg shadow-blue-500/20">
-              Download CV
+            <a href="/cv.pdf" target="_blank" className="hidden md:inline-block bg-linear-to-r from-blue-500 to-cyan-500 hover:opacity-90 text-white font-semibold py-2 px-5 rounded-lg transition-opacity shadow-lg shadow-blue-500/20">
+              My CV
             </a>
 
             <div className="hover:scale-110 active:scale-90 transition-transform">

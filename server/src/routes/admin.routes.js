@@ -5,6 +5,7 @@ const { adminAuth } = require('../middleware/admin.middleware');
 const projectController = require('../controllers/project.controller');
 const skillController = require('../controllers/skill.controller');
 const profileController = require('../controllers/profile.controller');
+const educationController = require('../controllers/education.controller');
 const messageController = require('../controllers/message.controller');
 const experienceController = require('../controllers/experience.controller');
 
@@ -31,6 +32,12 @@ router.delete('/skills/:id', adminAuth, skillController.deleteSkill);
 router.get('/profile', adminAuth, profileController.getProfile);
 router.post('/profile', adminAuth, profileController.createProfile);
 router.put('/profile/:id', adminAuth, profileController.updateProfile);
+
+// Admin education management (auth required)
+router.get('/education', adminAuth, educationController.getAllEducation);
+router.post('/education', adminAuth, educationController.createEducation);
+router.put('/education/:id', adminAuth, educationController.updateEducation);
+router.delete('/education/:id', adminAuth, educationController.deleteEducation);
 
 // Admin experience management (auth required)
 router.get('/experience', adminAuth, experienceController.getAllExperience);

@@ -9,7 +9,7 @@ type ManagerProps = {
   token: string;
 };
 
-type DashboardTab = 'projects' | 'skills' | 'experience' | 'profile' | 'messages';
+type DashboardTab = 'projects' | 'skills' | 'experience' | 'education' | 'profile' | 'messages';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -39,6 +39,7 @@ export default function AdminDashboard() {
     { id: 'projects', label: 'Projects' },
     { id: 'skills', label: 'Skills' },
     { id: 'experience', label: 'Experience' },
+    { id: 'education', label: 'Education' },
     { id: 'profile', label: 'Profile' },
     { id: 'messages', label: 'Messages' },
   ];
@@ -83,6 +84,7 @@ export default function AdminDashboard() {
           {activeTab === 'projects' && <ProjectsManager token={adminToken} />}
           {activeTab === 'skills' && <SkillsManager token={adminToken} />}
           {activeTab === 'experience' && <ExperienceManager token={adminToken} />}
+          {activeTab === 'education' && <EducationManager token={adminToken} />}
           {activeTab === 'profile' && <ProfileManager />}
           {activeTab === 'messages' && <MessagesManager token={adminToken} />}
         </div>
@@ -475,6 +477,133 @@ function ExperienceManager({ token }: ManagerProps) {
             </div>
             <button
               onClick={() => handleDeleteExperience(exp.id)}
+              className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-all"
+            >
+              <Trash2 size={20} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function EducationManager({ token }: ManagerProps) {
+  const [education, setEducation] = useState<any[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ institution: '', department: '', year_level: '', description: '' });
+
+  useEffect(() => {
+    fetchEducation();
+  }, []);
+
+  const fetchEducation = async () => {
+    try {
+      const response = await fetch('/api/admin/education', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        setEducation(await response.json());
+      }
+    } catch (error) {
+      console.error('Error fetching education:', error);
+    }
+  };
+
+  const handleAddEducation = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/api/admin/education', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        setFormData({ institution: '', department: '', year_level: '', description: '' });
+        setShowForm(false);
+        fetchEducation();
+      }
+    } catch (error) {
+      console.error('Error adding education:', error);
+    }
+  };
+
+  const handleDeleteEducation = async (id: number) => {
+    if (!confirm('Delete this education entry?')) return;
+    try {
+      const response = await fetch(`/api/admin/education/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) fetchEducation();
+    } catch (error) {
+      console.error('Error deleting education:', error);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-white">Manage Education</h2>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-blue-500 to-cyan-400 text-white rounded-lg hover:opacity-90 transition-all"
+        >
+          <Plus size={20} /> Add Education
+        </button>
+      </div>
+
+      {showForm && (
+        <form onSubmit={handleAddEducation} className="mb-6 p-4 bg-slate-700/50 rounded-lg space-y-4">
+          <input
+            type="text"
+            placeholder="University / Institution"
+            value={formData.institution}
+            onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
+            className="w-full px-4 py-2 rounded-lg bg-slate-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Department"
+            value={formData.department}
+            onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+            className="w-full px-4 py-2 rounded-lg bg-slate-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Year Level (e.g. 3rd Year)"
+            value={formData.year_level}
+            onChange={(e) => setFormData({ ...formData, year_level: e.target.value })}
+            className="w-full px-4 py-2 rounded-lg bg-slate-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <textarea
+            placeholder="Description"
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            className="w-full px-4 py-2 rounded-lg bg-slate-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
+            Add Education
+          </button>
+        </form>
+      )}
+
+      <div className="space-y-4">
+        {education.map((item) => (
+          <div key={item.id} className="p-4 bg-slate-700/50 rounded-lg flex justify-between items-start">
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-white">{item.institution}</h3>
+              <p className="text-sm text-gray-300">{item.department} • {item.year_level}</p>
+              {item.description && <p className="text-sm text-gray-400 mt-2">{item.description}</p>}
+            </div>
+            <button
+              onClick={() => handleDeleteEducation(item.id)}
               className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-all"
             >
               <Trash2 size={20} />

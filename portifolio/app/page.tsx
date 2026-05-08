@@ -1,18 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, MessageCircle, Send } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Send, Star, Zap, Cpu, Users, ShieldCheck, CheckCircle, GraduationCap, Building2, CalendarDays, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import ContactForm from "../components/ContactForm";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../utils/translations";
 
+type EducationEntry = {
+  id?: number;
+  institution: string;
+  department: string;
+  year_level: string;
+  description?: string;
+};
+
+const fallbackEducation: EducationEntry[] = [
+  {
+    institution: "Debre Berhan University",
+    department: "Software Engineering",
+    year_level: "3rd Year",
+    description: "Yohannis Birhane is currently studying software engineering and building practical web applications.",
+  },
+];
+
 export default function Home() {
   const { lang } = useLanguage();
   const t = translations[lang];
   const [activeTab, setActiveTab] = useState("skills");
+  const [education, setEducation] = useState<EducationEntry[]>(fallbackEducation);
+
+  useEffect(() => {
+    const loadEducation = async () => {
+      try {
+        const response = await fetch('/api/education');
+        if (!response.ok) return;
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setEducation(data);
+        }
+      } catch (error) {
+        console.error('Error fetching education:', error);
+      }
+    };
+
+    loadEducation();
+  }, []);
 
   return (
     <div className="relative flex flex-col min-h-screen font-sans text-gray-900 dark:text-gray-50 transition-colors duration-300 overflow-hidden">
@@ -23,7 +58,7 @@ export default function Home() {
       </div>
 
       {/* 1. HERO SECTION */}
-      <main className="flex flex-col lg:flex-row items-center justify-between relative z-10 w-full min-h-screen text-left py-20 px-10 xl:px-24 max-w-7xl mx-auto pt-32">
+      <main className="section-sep flex flex-col lg:flex-row items-center justify-between relative z-10 w-full min-h-screen text-left py-20 px-10 xl:px-24 max-w-7xl mx-auto pt-32">
         
         {/* Left Content Block */}
         <div className="flex flex-col items-start justify-center space-y-6 max-w-2xl w-full lg:w-3/5 z-10">
@@ -64,8 +99,8 @@ export default function Home() {
             <Link href="#projects" className="px-8 py-3 rounded-lg bg-linear-to-r from-blue-500 to-cyan-400 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/30">
               View My Projects
             </Link>
-            <a href="/cv.pdf" target="_blank" className="px-8 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/40 text-slate-800 dark:text-white font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors backdrop-blur-md">
-              Download CV
+            <a href="/cv.pdf" target="_blank" className="px-8 py-3 rounded-lg bg-linear-to-r from-blue-500 to-cyan-500 hover:opacity-90 text-white font-semibold transition-opacity shadow-lg shadow-blue-500/20">
+              My CV
             </a>
           </motion.div>
 
@@ -132,9 +167,13 @@ export default function Home() {
 
       </main>
 
+      <div className="section-break" aria-hidden="true">
+        <div className="section-break-line" />
+      </div>
+
       {/* Dynamic Sections Placeholders */}
                         {/* ABOUT SECTION */}
-      <section id="about" className="py-24 relative bg-transparent overflow-hidden scroll-mt-24">
+      <section id="about" className="section-sep py-24 relative bg-transparent overflow-hidden scroll-mt-24">
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           
           {/* Header */}
@@ -209,27 +248,27 @@ export default function Home() {
               
               <ul className="space-y-4 text-slate-700 dark:text-gray-300 text-sm md:text-base">
                 <li className="flex items-center gap-3">
-                  <span className="text-blue-500 font-bold">✦</span>
+                  <Star className="text-blue-500" size={18} />
                   Full Stack Web Development
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="text-blue-500 font-bold">✦</span>
+                  <Zap className="text-yellow-400" size={18} />
                   Data Structures & Algorithms
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="text-blue-500 font-bold">✦</span>
+                  <Cpu className="text-green-400" size={18} />
                   Artificial Intelligence & Machine Learning
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="text-blue-500 font-bold">✦</span>
+                  <Users className="text-indigo-400" size={18} />
                   Team Collaboration & Agile Development
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="text-blue-500 font-bold">✦</span>
+                  <ShieldCheck className="text-emerald-400" size={18} />
                   Cybersecurity
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="text-blue-500 font-bold">✦</span>
+                  <CheckCircle className="text-sky-400" size={18} />
                   Problem Solving
                 </li>
               </ul>
@@ -242,8 +281,107 @@ export default function Home() {
         <div className="absolute right-[5%] bottom-[20%] w-40 h-40 border border-slate-300 dark:border-slate-700/30 rounded-sm -rotate-12 z-0"></div>
       </section>
 
+      <div className="section-break" aria-hidden="true">
+        <div className="section-break-line" />
+      </div>
+
+      {/* EDUCATION SECTION */}
+      <section id="education" className="section-sep py-24 relative bg-transparent overflow-hidden scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-16 max-w-4xl mx-auto">
+            <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6"
+            >
+              Education <span className="text-blue-500">Journey</span>
+            </motion.h2>
+            <div className="section-divider" />
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-lg md:text-xl text-slate-700 dark:text-gray-300 leading-relaxed"
+            >
+              My academic background and current study focus, updated from the backend.
+            </motion.p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            {education.map((item, index) => (
+              <motion.div
+                key={`${item.institution}-${index}`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-8 shadow-lg relative overflow-hidden"
+              >
+                <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-blue-500 to-cyan-400"></div>
+                <div className="flex items-start gap-4">
+                  <div className="w-20 h-20 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg shadow-blue-500/10 overflow-hidden shrink-0 flex items-center justify-center p-2">
+                    <Image
+                      src="/images/universityLogo1.jpg"
+                      alt="Debre Berhan University logo"
+                      width={72}
+                      height={72}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs uppercase tracking-[0.2em] text-blue-500 font-semibold mb-2">Current Education</p>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{item.institution}</h3>
+                    <div className="mt-4 space-y-3 text-slate-700 dark:text-gray-300">
+                      <div className="flex items-center gap-3">
+                        <Building2 size={18} className="text-blue-500" />
+                        <span>{item.department}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <CalendarDays size={18} className="text-cyan-400" />
+                        <span>{item.year_level}</span>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <BookOpen size={18} className="text-emerald-400 mt-1" />
+                        <span>{item.description || 'Focused on software engineering fundamentals, web development, and project-based learning.'}</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white rounded-3xl p-8 shadow-2xl border border-slate-700/50"
+            >
+              <p className="text-sm uppercase tracking-[0.2em] text-cyan-300 font-semibold mb-4">Student Profile</p>
+              <h3 className="text-3xl font-extrabold mb-4">Yohannis Birhane</h3>
+              <p className="text-slate-300 leading-relaxed mb-6">
+                I am a third-year Software Engineering student at Debre Berhan University. My goal is to keep building practical, scalable software with a strong focus on modern web development.
+              </p>
+              <div className="space-y-3 text-sm text-slate-300">
+                <p><span className="text-cyan-300 font-semibold">University:</span> Debre Berhan University</p>
+                <p><span className="text-cyan-300 font-semibold">Department:</span> Software Engineering</p>
+                <p><span className="text-cyan-300 font-semibold">Year:</span> 3rd Year</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-break" aria-hidden="true">
+        <div className="section-break-line" />
+      </div>
+
             {/* SKILLS SECTION */}
-      <section id="skills" className="py-24 relative bg-transparent overflow-hidden">
+      <section id="skills" className="section-sep py-24 relative bg-transparent overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           
           {/* Header */}
@@ -256,6 +394,7 @@ export default function Home() {
             >
               Technical <span className="text-blue-500">Skills</span>
             </motion.h2>
+            <div className="section-divider" />
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -271,6 +410,10 @@ export default function Home() {
             
             {/* Category 1: Frontend Technologies */}
             <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
               className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
             >
               <div className="flex items-center gap-3 mb-8">
@@ -323,36 +466,6 @@ export default function Home() {
                   { name: "C++", score: "75%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++" className="w-10 h-10" /> }
                 ].map((skill, idx) => (
                   <div key={idx} className="flex flex-col items-center text-center group cursor-pointer">
-                    <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-2xl mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300 font-bold text-slate-700 dark:text-white">
-                      {skill.icon}
-                    </div>
-                    <span className="font-bold text-slate-800 dark:text-gray-200 text-sm mb-1">{skill.name}</span>
-                    <span className="text-xs text-slate-500 dark:text-gray-400">{skill.score} Proficiency</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Category 3: Database Management */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white">Database Management</h3>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-6">
-                {[
-                  { name: "PostgreSQL", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" className="w-10 h-10" /> },
-                  { name: "MySQL", score: "82%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL" className="w-10 h-10" /> },
-                  { name: "MongoDB", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB" className="w-10 h-10" /> }
-                ].map((skill, idx) => (
-                  <div key={idx} className="flex flex-col items-center text-center group cursor-pointer">
                     <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-2xl mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300">
                       {skill.icon}
                     </div>
@@ -363,12 +476,12 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Category 4: Tools & Methodologies */}
+            {/* Category 3: Tools & Methodologies */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
               className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
             >
               <div className="flex items-center gap-3 mb-8">
@@ -394,9 +507,42 @@ export default function Home() {
               </div>
             </motion.div>
 
+            {/* Category 4: Database Management */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/50 rounded-3xl p-10 shadow-lg"
+            >
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">Database Management</h3>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-6">
+                {[
+                  { name: "PostgreSQL", score: "80%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" className="w-10 h-10" /> },
+                  { name: "MySQL", score: "82%", icon: <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL" className="w-10 h-10" /> }
+                ].map((skill, idx) => (
+                  <div key={idx} className="flex flex-col items-center text-center group cursor-pointer">
+                    <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 flex items-center justify-center text-2xl mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                      {skill.icon}
+                    </div>
+                    <span className="font-bold text-slate-800 dark:text-gray-200 text-sm mb-1">{skill.name}</span>
+                    <span className="text-xs text-slate-500 dark:text-gray-400">{skill.score} Proficiency</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
+
+      <div className="section-break" aria-hidden="true">
+        <div className="section-break-line" />
+      </div>
 
       <section id="projects" className="py-24 relative">
         <div className="max-w-6xl mx-auto px-6">
@@ -500,6 +646,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <div className="section-break" aria-hidden="true">
+        <div className="section-break-line" />
+      </div>
 
       {/* Contact Section */}
       <section id="contact" className="py-24 relative overflow-hidden">
