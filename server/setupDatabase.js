@@ -2,45 +2,57 @@ const { Client } = require('pg');
 require('dotenv').config();
 
 async function createDatabaseAndTable() {
-  const dbConfig = {
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-  };
-
+  const connectionString = process.env.DATABASE_URL;
   const dbName = process.env.DB_NAME;
 
-  console.log('Connecting to PostgreSQL to check database ' + dbName + '...');
-  const initialClient = new Client({ ...dbConfig, database: 'postgres' });
+  const dbConfig = connectionString
+    ? {
+        connectionString,
+        ssl: { rejectUnauthorized: false },
+      }
+    : {
+        user: process.env.DB_USER,
+        host: process.env.DB_HOST,
+        password: process.env.DB_PASSWORD,
+        port: process.env.DB_PORT,
+      };
 
-  try {
-    await initialClient.connect();
-    const checkDbQuery = await initialClient.query(
-      'SELECT datname FROM pg_catalog.pg_database WHERE datname = $1',
-      [dbName]
-    );
+  if (!connectionString) {
+    console.log('Connecting to PostgreSQL to check database ' + dbName + '...');
+    const initialClient = new Client({ ...dbConfig, database: 'postgres' });
 
-    if (checkDbQuery.rowCount === 0) {
-      console.log('Database ' + dbName + ' not found. Creating it now...');
-      await initialClient.query('CREATE DATABASE \x22' + dbName + '\x22');
-      console.log('Database ' + dbName + ' created successfully!');
-    } else {
-      console.log('Database ' + dbName + ' already exists. Skipping creation.');
+    try {
+      await initialClient.connect();
+      const checkDbQuery = await initialClient.query(
+        'SELECT datname FROM pg_catalog.pg_database WHERE datname = $1',
+        [dbName]
+      );
+
+      if (checkDbQuery.rowCount === 0) {
+        console.log('Database ' + dbName + ' not found. Creating it now...');
+        await initialClient.query('CREATE DATABASE \x22' + dbName + '\x22');
+        console.log('Database ' + dbName + ' created successfully!');
+      } else {
+        console.log('Database ' + dbName + ' already exists. Skipping creation.');
+      }
+    } catch (error) {
+      if (error.code === '28P01') {
+        console.error('\n? ERROR: Authentication failed. Please check your DB_PASSWORD in server/.env\n');
+      } else {
+        console.error('? Error during database creation:', error.message);
+      }
+      process.exit(1);
+    } finally {
+      await initialClient.end();
     }
-  } catch (error) {
-    if (error.code === '28P01') {
-      console.error('\n? ERROR: Authentication failed. Please check your DB_PASSWORD in server/.env\n');
-    } else {
-      console.error('? Error during database creation:', error.message);
-    }
-    process.exit(1);
-  } finally {
-    await initialClient.end();
+  } else {
+    console.log('DATABASE_URL detected. Skipping database creation and connecting directly to the hosted database...');
   }
 
-  console.log('\nConnecting to ' + dbName + ' to create tables...');
-  const targetClient = new Client({ ...dbConfig, database: dbName });
+  console.log('\nConnecting to the target database to create tables...');
+  const targetClient = connectionString
+    ? new Client(dbConfig)
+    : new Client({ ...dbConfig, database: dbName });
 
   try {
     await targetClient.connect();

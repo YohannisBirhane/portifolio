@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAdmin } from '../../../context/AdminContext';
 import Link from 'next/link';
@@ -20,7 +21,7 @@ export default function AdminLoginPage() {
     return null;
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setLoading(true);

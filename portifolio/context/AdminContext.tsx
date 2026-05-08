@@ -2,11 +2,24 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const AdminContext = createContext();
+type AdminUser = {
+  username: string;
+  role?: string;
+};
 
-export function AdminProvider({ children }) {
-  const [adminToken, setAdminToken] = useState(null);
-  const [adminUser, setAdminUser] = useState(null);
+type AdminContextType = {
+  adminToken: string | null;
+  adminUser: AdminUser | null;
+  isLoading: boolean;
+  login: (username: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  logout: () => void;
+};
+
+const AdminContext = createContext<AdminContextType | undefined>(undefined);
+
+export function AdminProvider({ children }: { children: React.ReactNode }) {
+  const [adminToken, setAdminToken] = useState<string | null>(null);
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Check for existing token on mount
@@ -20,7 +33,7 @@ export function AdminProvider({ children }) {
     }
   }, []);
 
-  const verifyToken = async (token) => {
+  const verifyToken = async (token: string) => {
     try {
       const response = await fetch('/api/admin/verify', {
         headers: { Authorization: `Bearer ${token}` },
@@ -41,7 +54,7 @@ export function AdminProvider({ children }) {
     }
   };
 
-  const login = async (username, password) => {
+  const login = async (username: string, password: string) => {
     try {
       const response = await fetch('/api/admin/login', {
         method: 'POST',
@@ -59,7 +72,7 @@ export function AdminProvider({ children }) {
       setAdminUser(data.user);
       return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      return { success: false, error: error instanceof Error ? error.message : 'Login failed' };
     }
   };
 

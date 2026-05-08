@@ -40,7 +40,7 @@ function InteractiveProjectCard({ children, icon }: InteractiveProjectCardProps)
 
   const dynamicShadow = useTransform(
     [springRotateX, springRotateY],
-    ([x, y]) => `${(-y * 1.2).toFixed(1)}px ${(x * 1.2 + 18).toFixed(1)}px 40px rgba(2, 6, 23, 0.25)`
+    ([x, y]: number[]) => `${(-y * 1.2).toFixed(1)}px ${(x * 1.2 + 18).toFixed(1)}px 40px rgba(2, 6, 23, 0.25)`
   );
 
   const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {

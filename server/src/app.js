@@ -13,7 +13,12 @@ const { errorHandler } = require('./middleware/error.middleware');
 const app = express();
 
 // Middleware
-app.use(cors());
+// Allow restricting CORS in production by setting FRONTEND_URL
+if (process.env.FRONTEND_URL) {
+  app.use(cors({ origin: process.env.FRONTEND_URL }));
+} else {
+  app.use(cors());
+}
 app.use(express.json());
 
 // Routes
